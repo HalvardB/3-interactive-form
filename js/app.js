@@ -17,7 +17,7 @@
   * CC number, Zip code and CVV only accepts numbers. Letters give error message.
 - Validation messages:
   * Error messages are shown with a red border and red text.
-  * This are added to all form elements and appear in real time (not only when submiting)
+  * Errors are added to all form elements and appear in real time (not only when submiting)
   * I added a conditional error message to the credit card number. Try to enter
     a number shorter than 13 and one longer than 16 digits. And a card Number
     with letters in it.
@@ -50,13 +50,13 @@ const $tuesday1pm = $(".js-libs");
 const $tuesday1pm2 = $(".node");
 const $wednesday9am = $(".build-tools");
 const $wednesday1pm = $(".npm");
-let alt1 = false
-let alt2 = false
-let alt3 = false
-let alt4 = false
-let alt5 = false
-let alt6 = false
-let alt7 = false
+let alt1 = false;
+let alt2 = false;
+let alt3 = false;
+let alt4 = false;
+let alt5 = false;
+let alt6 = false;
+let alt7 = false;
 let totalBalance = 0;
 const paymentOption = document.getElementById("payment");
 const creditCard = document.getElementById("credit-card");
@@ -64,18 +64,11 @@ const paypalInfo = document.getElementById("paypal-info");
 const bitcoinInfo = document.getElementById("bitcoin-info");
 const registerButton = document.getElementById("registerButton");
 const nameField = document.getElementById("name");
-const nameLabel = document.getElementById("nameLabel");
 const mailField = document.getElementById("mail");
-const mailLabel = document.getElementById("mailLabel");
 const designField = document.getElementById("design");
-const designLabel = document.getElementById("designLabel");
-const itemLabel = document.getElementById("itemLabel");
 const ccNum = document.getElementById("cc-num");
-const ccLabel = document.getElementById("creditLabel");
 const zipField = document.getElementById("zip");
-const zipLabel = document.getElementById("zipLabel");
 const cvvField = document.getElementById("cvv");
-const cvvLabel = document.getElementById("cvvLabel");
 const nameDiv = document.getElementById("nameDiv");
 const mailDiv = document.getElementById("mailDiv");
 const otherField = document.getElementById("other-title");
@@ -97,15 +90,15 @@ const successMessage = document.createElement("label");
 let success = true;
 
 // Hiding the "other" job role field.
-newRole.style.display = "none"
+newRole.style.display = "none";
 
 // Showing the other job role field if "other" is selected.
 title.addEventListener("change", () => {
   if (title.value === "other"){
-    newRole.style.display = "block"
+    newRole.style.display = "block";
   } else {
-    newRole.style.display = "none"
-    $(".otherError").hide()
+    newRole.style.display = "none";
+    $(".otherError").hide();
   }
 });
 
@@ -122,21 +115,19 @@ design.addEventListener("change", () => {
 
   // Displaying only the relevant color choices
   if (design.value === "heart js") {
-    colorMenu.style.display = "block"
+    colorMenu.style.display = "block";
     for(var i = 3; i < 6; i++){
       colorChoices[i].style.display = "block";
       color.value = colorChoices[3].value; // Adding the first choice
-      designLabel.style.color = "#000"; // Resetting label color after error
     }
   } else if (design.value === "js puns") {
-    colorMenu.style.display = "block"
+    colorMenu.style.display = "block";
     for(var i = 0; i < 3; i++){
       colorChoices[i].style.display = "block";
       color.value = colorChoices[0].value; // Adding the first choice
-      designLabel.style.color = "#000"; // Resetting label color after error
     }
   } else { // In case the visitor go back to "select theme"
-    colorMenu.style.display = "none"
+    colorMenu.style.display = "none";
     for(var i = 0; i < 6; i++){
       colorChoices[i].style.display = "none";
     }
@@ -146,42 +137,15 @@ design.addEventListener("change", () => {
 // Activities
 // Function to disable competing activities and add class for CSS color
 function disable(activity){
-  activity.attr("disabled", true)
-  activity.parent().addClass("disabled")
+  activity.attr("disabled", true);
+  activity.parent().addClass("disabled");
 }
 
 // Function to enable previously competing activities and remove the class
 function enable(activity){
-  activity.attr("disabled", false)
-  activity.parent().removeClass("disabled")
+  activity.attr("disabled", false);
+  activity.parent().removeClass("disabled");
 }
-
-// Disabeling and enabeling competing activities
-activities.addEventListener("change", () => {
-  if (tuesday9am[0].checked) {
-    disable($tuesday9am2);
-  } else if (tuesday9am[0].checked === false) {
-    enable($tuesday9am2);
-  }
-
-  if (tuesday9am2[0].checked) {
-    disable($tuesday9am);
-  } else if (tuesday9am2[0].checked === false) {
-    enable($tuesday9am);
-  }
-
-  if (tuesday1pm[0].checked) {
-    disable($tuesday1pm2);
-  } else if (tuesday1pm[0].checked === false) {
-    enable($tuesday1pm2);
-  }
-
-  if (tuesday1pm2[0].checked) {
-    disable($tuesday1pm);
-  } else if (tuesday1pm2[0].checked === false) {
-    enable($tuesday1pm);
-  }
-});
 
 // Running total
 // Function to add to the total balance
@@ -198,7 +162,8 @@ function removeBalance(dollar){
   return balance;
 }
 
-// Calculating total balance when registering for activities
+// Calculating total balance when registering for activities and disable
+// competing alternatives
 activities.addEventListener("change", () => {
 
   // Main Conference - alternative 1
@@ -207,43 +172,51 @@ activities.addEventListener("change", () => {
     alt1 = true
   } else if (mainConference[0].checked === false && alt1 === true) {
     removeBalance(200);
-    alt1 = false
+    alt1 = false;
   }
 
   // JS Frameworks - alternative 2
   else if (tuesday9am[0].checked && alt2 === false) {
     addBalance(100);
     alt2 = true;
+    disable($tuesday9am2);
   } else if (tuesday9am[0].checked === false && alt2 === true) {
     removeBalance(100);
     alt2 = false;
+    enable($tuesday9am2);
   }
 
   // JS Libraries - alternative 3
   else if (tuesday1pm[0].checked && alt3 === false) {
     addBalance(100);
     alt3 = true;
+    disable($tuesday1pm2);
   } else if (tuesday1pm[0].checked === false && alt3 === true) {
     removeBalance(100);
     alt3 = false;
+    enable($tuesday1pm2);
   }
 
   // Express Workshop - alternative 4
   else if (tuesday9am2[0].checked && alt4 === false) {
     addBalance(100);
     alt4 = true;
+    disable($tuesday9am);
   } else if (tuesday9am2[0].checked === false && alt4 === true) {
     removeBalance(100);
     alt4 = false;
+    enable($tuesday9am);
   }
 
   // Node.js - alternative 5
   else if (tuesday1pm2[0].checked && alt5 === false) {
     addBalance(100);
     alt5 = true;
+    disable($tuesday1pm);
   } else if (tuesday1pm2[0].checked === false && alt5 === true) {
     removeBalance(100);
     alt5 = false;
+    enable($tuesday1pm);
   }
 
   // Build tools - alternative 6
@@ -265,32 +238,31 @@ activities.addEventListener("change", () => {
   }
 });
 
-// Total balance
+// Appending total balance
 totalLabel.className = "balance";
 activities.appendChild(totalLabel);
-$(".balance").hide()
+$(".balance").hide();
 
-// Adding total balance if more than 0
+// Show total balance if more than 0
 activities.addEventListener("change", () => {
   if(totalBalance > 0) {
     totalLabel.innerHTML = "<b>Total Balance: $" + totalBalance + "</b>";
-    $(".balance").show()
-    $(".activityError").hide() // Removing the error message if visible
-    itemLabel.style.color = "#000" // Resetting label color after error
+    $(".balance").show();
+    $(".activityError").hide(); // Removing the error message if visible
   } else {
-    $(".balance").hide()
+    $(".balance").hide();
   }
 });
 
 // Payment
-// Hiding payment information
+// Function to hide payment information
 function hidePayment(){
   creditCard.style.display = "none";
   paypalInfo.style.display = "none";
   bitcoinInfo.style.display = "none";
 }
 
-// Hiding all payment options from start
+// Hiding PayPal and Bitcoin options from start
 paypalInfo.style.display = "none";
 bitcoinInfo.style.display = "none";
 
@@ -312,11 +284,11 @@ registerButton.addEventListener("click", (e) => {
   e.preventDefault();
   success = true;
 
-  validateName()
-  validateEmail(mailField)
-  validateJob()
-  validateShirt()
-  validateActivities()
+  validateName();
+  validateEmail(mailField);
+  validateJob();
+  validateShirt();
+  validateActivities();
 
   if(paymentOption.value === "credit card"){
     validateCCnum();
@@ -324,78 +296,50 @@ registerButton.addEventListener("click", (e) => {
     validateCVV();
   }
 
+  // If all fields are ok, then run success message.
   if(success === true) {
-    // Hide everything and show success message
-    $("form").hide()
-    $(registerFor).hide()
+    $("form").hide();
+    $(registerFor).hide();
     $(".successMessage").show();
   }
 });
 
-// Name error message (if visitor enters a invalid name)
-nameError.className = "nameError error";
-nameError.textContent = "Please enter a valid name.";
-nameDiv.appendChild(nameError);
-$(".nameError").hide()
-
-// Mail error message (if visitor enters a invalid email adress)
-emailError.className = "emailError error";
-emailError.textContent = "Please enter a valid email adress.";
-mailDiv.appendChild(emailError);
-$(".emailError").hide()
-
-// Other Job Role error message (if visitor does not input other job role)
-otherError.className = "otherError error";
-otherError.textContent = "Please tell us what your current job role is.";
-otherDiv.appendChild(otherError);
-$(".otherError").hide()
-
-// T-shirt error message (if visitor does not choose a theme)
-shirtError.className = "shirtError error";
-shirtError.textContent = "Please choose a complimentary T-shirt.";
-shirtDiv.appendChild(shirtError);
-$(".shirtError").hide()
-
-// Activity error message (if visitor does not check any activities)
-activityError.className = "activityError error";
-activityError.textContent = "Please register for minimum one activity.";
-activities.appendChild(activityError);
-$(".activityError").hide()
-
-// Card number error message (if visitor enters an invalid card number)
-paymentError.className = "paymentError error";
-paymentError.textContent = "Please enter a valid card number.";
-paymentInfo.appendChild(paymentError);
-$(".paymentError").hide();
-
-// Zip code error message (if visitor enters an invalid zip code)
-zipError.className = "zipError error";
-zipError.textContent = "Please enter a valid zip code.";
-paymentInfo.appendChild(zipError);
-$(".zipError").hide();
-
-// CVV error message (if visitor enters an invalid CVV code)
-cvvError.className = "cvvError error";
-cvvError.textContent = "Please enter a valid CVV code.";
-paymentInfo.appendChild(cvvError);
-$(".cvvError").hide();
-
 // Form validation
+// Error message for non-input fields: t-shirt and activities
+function errorMessage(errorName, errorDiv, textInput){
+  errorName.className = errorName + " error";
+  errorName.textContent = textInput;
+  errorDiv.appendChild(errorName);
+  $(errorName).show();
+  success = false;
+}
+
+// Error message for input fields
+function errorVisualization(fieldName, errorName, errorDiv, errorMessage, successValue){
+  fieldName.style.borderColor = "red";
+  errorName.textContent = errorMessage;
+  errorName.className = errorName + " error";
+  errorDiv.appendChild(errorName);
+  $(errorName).show();
+  success = false;
+}
+
+// Function for correct field validation
+function correctVisualization(fieldName, errorName){
+  fieldName.style.borderColor = "green";
+  $(errorName).hide();
+}
+
 // Function to validate name input
 function validateName(){
   if(validateWord(nameField.value) === false){
-    $(".nameError").show()
-    nameField.style.borderColor = "red";
-    nameError.textContent = "Are you sure that's your name?";
-    success = false;
+    errorVisualization(nameField, nameError, nameDiv, "Are you sure that's your name?");
+
   } else if(nameField.value == ""){
-    $(".nameError").show()
-    nameField.style.borderColor = "red";
-    nameError.textContent = "Please enter a valid name.";
-    success = false;
+    errorVisualization(nameField, nameError, nameDiv, "Please enter a valid name.");
+
   } else {
-    $(".nameError").hide()
-    nameField.style.borderColor = "green";
+    correctVisualization(nameField, nameError);
   }
 }
 
@@ -403,13 +347,9 @@ function validateName(){
 function validateEmail(inputText) {
   var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   if(inputText.value.match(mailformat)) {
-    $(".emailError").hide()
-    mailLabel.style.color = "#000";
-    mailField.style.borderColor = "green";
+    correctVisualization(mailField, emailError);
   } else {
-    $(".emailError").show()
-    mailField.style.borderColor = "red";
-    success = false;
+    errorVisualization(mailField, emailError, mailDiv, "Please enter a valid email adress.");
   }
 }
 
@@ -417,12 +357,9 @@ function validateEmail(inputText) {
 function validateJob(){
   if(otherTitle.value === "other"){
     if (newRole.value === ""){
-      $(".otherError").show()
-      newRole.style.borderColor = "red";
-      success = false;
+      errorVisualization(newRole, otherError, otherDiv, "Please tell us what your current job role is.");
     } else {
-      $(".otherError").hide()
-      newRole.style.borderColor = "green";
+      correctVisualization(newRole, otherError);
     }
   }
 }
@@ -430,20 +367,18 @@ function validateJob(){
 // Function to validate T-shirt Theme
 function validateShirt(){
   if(designField.value === "Select Theme"){
-    $(".shirtError").show()
-    success = false;
+    errorMessage(shirtError, shirtDiv, "Please choose a complimentary T-shirt.");
   } else {
-    $(".shirtError").hide()
+    $(shirtError).hide();
   }
 }
 
 // Function to validate activities
 function validateActivities(){
   if (totalBalance === 0){
-    $(".activityError").show()
-    success = false;
+    errorMessage(activityError, activities, "Please register for minimum one activity.");
   } else {
-    $(".activityError").hide()
+    $(activityError).hide();
   }
 }
 
@@ -452,81 +387,65 @@ function validateCCnum(){
 
   // If field is empty
   if(ccNum.value === ""){
-    paymentError.textContent = "Please enter a valid card number.";
-    $(".paymentError").show();
-    ccNum.style.borderColor = "red";
-    success = false;
+    errorVisualization(ccNum, paymentError, paymentInfo, "Please enter a valid card number.");
 
     // If numeric
   } else if (IsNumeric(ccNum.value) === false){
-    paymentError.textContent = "Obs, it looks like there are some letters in your card number.";
-    $(".paymentError").show();
-    ccNum.style.borderColor = "red";
-    success = false;
+    errorVisualization(ccNum, paymentError, paymentInfo, "Obs, your Credit Card number doesn't look like a number..");
 
     // If field is shorter than 13 digits
   } else if (ccNum.value.length < 13){
-    paymentError.textContent = "Great job, you just need " + (13 - ccNum.value.length) + " additional number(s).";
-    $(".paymentError").show();
-    ccNum.style.borderColor = "red";
-    success = false;
+    errorVisualization(ccNum, paymentError, paymentInfo, "Great job, you just need " + (13 - ccNum.value.length) + " additional number(s).");
 
     // If field is longer than 16 digits
   } else if (ccNum.value.length > 16){
-    paymentError.textContent = "You are close, unfortunately that is " + (ccNum.value.length - 16) + " number(s) too long.";
-    $(".paymentError").show();
-    ccNum.style.borderColor = "red";
-    success = false;
+    errorVisualization(ccNum, paymentError, paymentInfo, "You are close, unfortunately that is " + (ccNum.value.length - 16) + " number(s) too long.");
 
     // If between 13 and 16 digits
   } else {
-    $(".paymentError").hide();
-    ccLabel.style.color = "#000";
-    ccNum.style.borderColor = "green";
+    correctVisualization(ccNum, paymentError);
   }
 }
 
-// Function to validate Zip Code
+// Function to validate Zip Code with conditional messages
 function validateZip(){
-  if (IsNumeric(zipField.value) === false){
-    $(".zipError").show();
-    zipField.style.borderColor = "red";
-    success = false;
+  if(zipField.value === ""){
+    errorVisualization(zipField, zipError, paymentInfo, "Please enter a valid zip code.");
+
+  } else if (IsNumeric(zipField.value) === false){
+    errorVisualization(zipField, zipError, paymentInfo, "Obs, your Zip Codes doesn't look like a number..");
+
   } else if(zipField.value.length !== 5){
-    $(".zipError").show();
-    zipField.style.borderColor = "red";
-    success = false;
+    errorVisualization(zipField, zipError, paymentInfo, "Your Zip Code should be 5 digits.");
+
   } else {
-    $(".zipError").hide();
-    zipLabel.style.color = "#000";
-    zipField.style.borderColor = "green";
+    correctVisualization(zipField, zipError);
   }
 }
 
-// Function to validate CVV
+// Function to validate CVV with conditional messages
 function validateCVV(){
-  if (IsNumeric(cvvField.value) === false){
-    $(".cvvError").show();
-    cvvField.style.borderColor = "red";
-    success = false;
+  if(cvvField.value === ""){
+    errorVisualization(cvvField, cvvError, paymentInfo, "Please enter a valid CVV number.");
+
+  } else if (IsNumeric(cvvField.value) === false){
+    errorVisualization(cvvField, cvvError, paymentInfo, "Obs, your CVV doesn't look like a number..");
+
   } else if(cvvField.value.length !== 3){
-    $(".cvvError").show();
-    cvvField.style.borderColor = "red";
-    success = false;
+    errorVisualization(cvvField, cvvError, paymentInfo, "Your CVV should be 3 digits.");
+
   } else {
-    $(".cvvError").hide();
-    ccLabel.style.color = "#000";
-    cvvField.style.borderColor = "green";
+    correctVisualization(cvvField, cvvError);
   }
 }
 
-// Function to validate if a string is a string
+// Function to validate if a string is a string (used in name field)
 function validateWord(text){
   const re = /^[a-zA-Z]*$/;
   return re.test(text);
 }
 
-// Function to validate if int is an int
+// Function to validate if int is an int (used in credit card fields)
 function IsNumeric(val) {
   const re = /^\d+$/;
   return re.test(val);
@@ -555,14 +474,20 @@ activities.addEventListener("change", () =>{
 
 ccValidate.addEventListener("keyup", () =>{
   validateCCnum();
+  $(cvvError).hide(); // Hiding Zip and CVV errors
+  $(zipError).hide();
 });
 
 zipValidate.addEventListener("keyup", () =>{
   validateZip();
+  $(paymentError).hide();  // Hiding Credit Card and CVV errors
+  $(cvvError).hide();
 });
 
 cvvValidate.addEventListener("keyup", () =>{
   validateCVV();
+  $(paymentError).hide();  // Hiding Credit Card and Zip errors
+  $(zipError).hide();
 });
 
 // Success message
